@@ -1,8 +1,12 @@
 package com.framework.backend;
 
 import com.framework.backend.config.DataConfig;
+import com.framework.backend.config.DatabaseCleanupListener;
 import com.framework.backend.config.WebConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
 
 /**
  * Configuration d'initialisation de l'application web Spring MVC
@@ -26,5 +30,13 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
     protected String[] getServletMappings() {
         // Mappage du DispatcherServlet
         return new String[] { "/" };
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        // Enregistrer le listener de nettoyage de la base de données
+        servletContext.addListener(new DatabaseCleanupListener());
+        
+        super.onStartup(servletContext);
     }
 }
