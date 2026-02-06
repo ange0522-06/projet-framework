@@ -24,6 +24,7 @@ DEV 2: Tina
 			-Ajout  des conditions dans la fonction pour pouvoir fltrer par date
 		FRONTEND
 			-Creation d'une page liste reservation avec une filtre dedans
-			-Integration de la function du BACKEND avec la page 
+			-Integration de la function du BACKEND avec la page
 		
 
+ 

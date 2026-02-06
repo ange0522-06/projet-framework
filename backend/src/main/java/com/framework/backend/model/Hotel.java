@@ -1,24 +1,29 @@
 package com.framework.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "hotel", schema = "local")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    
+public class Hotel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "hotel_id")
     private Long id;
-    
+
     @Column(nullable = false)
     private String name;
-    
-    @Column(nullable = false, unique = true)
-    private String email;
+
+    @Column(nullable = false)
+    private String addresse;
+
+    private String phone;
 }
