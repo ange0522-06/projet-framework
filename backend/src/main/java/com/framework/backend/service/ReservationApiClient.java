@@ -1,5 +1,6 @@
 package com.framework.backend.service;
 
+import com.framework.backend.dto.ApiResponse;
 import com.framework.backend.dto.ReservationFrontDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,30 +28,36 @@ public class ReservationApiClient {
 
     public List<ReservationFrontDto> getReservationsFromBackOffice() {
         String url = baseUrl + "/reservations";
-        ResponseEntity<List<ReservationFrontDto>> response = restTemplate.exchange(
+        ResponseEntity<ApiResponse<ReservationFrontDto>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<ReservationFrontDto>>() {}
+                new ParameterizedTypeReference<ApiResponse<ReservationFrontDto>>() {}
         );
-        return response.getBody() != null ? response.getBody() : Collections.emptyList();
+        
+        ApiResponse<ReservationFrontDto> body = response.getBody();
+        return (body != null && body.getData() != null) ? body.getData() : Collections.emptyList();
     }
 
-    public List<ReservationFrontDto> getReservationsByDate(LocalDate startDate, LocalDate endDate) {
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl + "/reservations");
-        if (startDate != null) {
-            builder.queryParam("startDate", startDate);
+    public List<ReservationFrontDto> getReservationsByDate(LocalDate date) {
+        // Récupérer toutes les réservations
+        List<ReservationFrontDto> allReservations = getReservationsFromBackOffice();
+        
+        // Si aucune date n'est spécifiée, retourner toutes les réservations
+        if (date == null) {
+            return allReservations;
         }
-        if (endDate != null) {
-            builder.queryParam("endDate", endDate);
-        }
-
-        ResponseEntity<List<ReservationFrontDto>> response = restTemplate.exchange(
-                builder.toUriString(),
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<ReservationFrontDto>>() {}
-        );
-        return response.getBody() != null ? response.getBody() : Collections.emptyList();
+        
+        // Filtrer côté Java car l'API ne supporte pas le filtre par date
+        return allReservations.stream()
+                .filter(reservation -> {
+                    if (reservation.getDateheure() == null) {
+                        return false;
+                    }
+                    // Format: "2026-02-07 18:12:00.0"
+                    String dateStr = reservation.getDateheure().substring(0, 10);
+                    return dateStr.equals(date.toString());
+                })
+                .collect(java.util.stream.Collectors.toList());
     }
 }

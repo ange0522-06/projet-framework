@@ -12,12 +12,8 @@
 
     <form class="filter" method="get" action="<c:url value='/front/reservations/filter' />">
         <div class="field">
-            <label for="startDate">Date debut</label>
-            <input type="date" id="startDate" name="startDate" value="${startDate}" />
-        </div>
-        <div class="field">
-            <label for="endDate">Date fin</label>
-            <input type="date" id="endDate" name="endDate" value="${endDate}" />
+            <label for="date">Date de reservation</label>
+            <input type="date" id="date" name="date" value="${date}" />
         </div>
         <button type="submit">Filtrer</button>
         <a class="reset" href="<c:url value='/front/reservations' />">Reinitialiser</a>

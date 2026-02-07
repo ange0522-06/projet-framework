@@ -31,14 +31,12 @@ public class ReservationFrontController {
 
     @GetMapping("/filter")
     public String filterReservationsByDate(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             Model model) {
 
-        List<ReservationFrontDto> reservations = reservationFrontService.listReservationByDate(startDate, endDate);
+        List<ReservationFrontDto> reservations = reservationFrontService.listReservationByDate(date);
         model.addAttribute("reservations", reservations);
-        model.addAttribute("startDate", startDate);
-        model.addAttribute("endDate", endDate);
+        model.addAttribute("date", date);
         return "listeReservation";
     }
 }
