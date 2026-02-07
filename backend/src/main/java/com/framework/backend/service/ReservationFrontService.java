@@ -19,7 +19,7 @@ public class ReservationFrontService {
         return reservationApiClient.getReservationsFromBackOffice();
     }
 
-    public List<ReservationFrontDto> listReservationByDate(LocalDate startDate, LocalDate endDate) {
-        return reservationApiClient.getReservationsByDate(startDate, endDate);
+    public List<ReservationFrontDto> listReservationByDate(LocalDate date) {
+        return reservationApiClient.getReservationsByDate(date);
     }
 }
